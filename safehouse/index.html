@@ -23,7 +23,7 @@
 </head>
 <body>
 <form id="f" hidden>
-  <h1>Dev preview</h1>
+  <h1>Faction only</h1>
   <p>This page is password protected.</p>
   <input id="pw" type="password" autocomplete="current-password" placeholder="Password" autofocus>
   <label><input id="rem" type="checkbox" checked> Remember on this device</label>
@@ -33,7 +33,7 @@
 </form>
 <script>
 (() => {
-  const SALT = '247a1b7a710674d0570cea28f3bea720', ITER = 600000, SRC = 'p.bin?v=dab5d2b2b4', STORE = 'atfDevKey';
+  const SALT = '64c1c0d379737e8bed1a1e6b7b0a4d7f', ITER = 600000, SRC = 'p.bin?v=cef204cbc9', STORE = 'atfShKey';
   const hex = h => new Uint8Array(h.match(/../g).map(x => parseInt(x, 16)));
   const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
   const $ = id => document.getElementById(id);
