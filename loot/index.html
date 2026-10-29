@@ -33,7 +33,7 @@
 </form>
 <script>
 (() => {
-  const SALT = '247a1b7a710674d0570cea28f3bea720', ITER = 600000, SRC = 'p.bin?v=11934bb9bb', STORE = 'atfDevKey';
+  const SALT = '247a1b7a710674d0570cea28f3bea720', ITER = 600000, SRC = 'p.bin?v=93b6e3fa85', STORE = 'atfDevKey';
   const hex = h => new Uint8Array(h.match(/../g).map(x => parseInt(x, 16)));
   const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
   const $ = id => document.getElementById(id);
@@ -50,7 +50,8 @@
     const text = await new Response(new Blob([plain]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
     return JSON.parse(text);
   }
-  function show(p) {
+  function show(p, raw) {
+    window.__ATF_KEY = raw; // the safehouse map derives its server token from this
     const pics = {};
     for (const [k, v] of Object.entries(p.pics)) pics[k] = URL.createObjectURL(new Blob([b64(v)], { type: 'image/webp' }));
     window.__ATF_PIC = pics;
@@ -65,7 +66,7 @@
   async function tryStored() {
     let s = null; try { s = JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) {}
     if (s && s.salt === SALT) {
-      try { show(await open(b64(s.key))); return; } catch (e) { try { localStorage.removeItem(STORE); } catch (e2) {} }
+      try { const raw = b64(s.key); show(await open(raw), raw); return; } catch (e) { try { localStorage.removeItem(STORE); } catch (e2) {} }
     }
     $('f').hidden = false; $('pw').focus();
   }
@@ -76,7 +77,7 @@
       const raw = await derive($('pw').value);
       const p = await open(raw);
       if ($('rem').checked) try { localStorage.setItem(STORE, JSON.stringify({ salt: SALT, key: keyStr(raw) })); } catch (e) {}
-      show(p);
+      show(p, raw);
     } catch (e) {
       $('err').textContent = e && e.message === 'load' ? 'Could not load the page. Try again.' : 'Wrong password.';
       $('go').disabled = false;
