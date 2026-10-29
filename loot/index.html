@@ -33,7 +33,7 @@
 </form>
 <script>
 (() => {
-  const SALT = '247a1b7a710674d0570cea28f3bea720', ITER = 600000, SRC = 'p.bin?v=93b6e3fa85', STORE = 'atfDevKey';
+  const SALT = '247a1b7a710674d0570cea28f3bea720', ITER = 600000, SRC = 'p.bin?v=3c06e75950', STORE = 'atfDevKey';
   const hex = h => new Uint8Array(h.match(/../g).map(x => parseInt(x, 16)));
   const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
   const $ = id => document.getElementById(id);
